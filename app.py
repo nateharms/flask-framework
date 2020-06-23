@@ -11,9 +11,30 @@ app = Flask(__name__)
 def index():
   return render_template('index.html')
 
-@app.route('/about')
-def about():
-  return render_template('about.html')
+@app.route('/ticker', methods=['GET', 'POST'])
+def ticker():
+  bool_dict = {
+    'on':True,
+    'off':False
+  }
+  ticker_index = request.form.get('ticker').upper()
+  opening = bool_dict[request.form.get('opening', 'off')]
+  closing = bool_dict[request.form.get('closing', 'off')]
+  adj_closing = bool_dict[request.form.get('adj-closing', 'off')]
+  try:
+    script, div = plot_ticker(
+      ticker_index=ticker_index,
+      opening=opening,
+      closing=closing,
+      adj_closing=adj_closing,
+    )
+  except:
+    return redirect('/')
+  return render_template('ticker.html', 
+    ticker=request.form.get('ticker'),
+    script = script,
+    div = div
+    )
 
 if __name__ == '__main__':
   app.run(port=33507)
