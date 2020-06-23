@@ -5,3 +5,6 @@ flask
 jinja2
 pip
 simplejson
+alpha_vantage
+requests==2.20.0
+gunicorn==19.9.0
