@@ -23,12 +23,20 @@ def ticker():
   opening = bool_dict[request.form.get('opening', 'off')]
   closing = bool_dict[request.form.get('closing', 'off')]
   adj_closing = bool_dict[request.form.get('adj-closing', 'off')]
+  if request.form.get('days') == '':
+    days = 30
+  else:
+    try:
+      days = int(request.form.get('days', 30))
+    except:
+      days = 30
   try:
     script, div = plot_ticker(
       ticker_index=ticker_index,
       opening=opening,
       closing=closing,
       adj_closing=adj_closing,
+      days=days
     )
   except:
     return redirect('/')
@@ -38,7 +46,7 @@ def ticker():
     div = div
     )
 
-def plot_ticker(ticker_index, opening, closing, adj_closing):
+def plot_ticker(ticker_index, opening, closing, adj_closing,days):
   """
   A function to create a plot of the 
   """
@@ -47,15 +55,10 @@ def plot_ticker(ticker_index, opening, closing, adj_closing):
   closing_data = []
   adj_closing_data = []
   dates = []
-  if not any([opening, closing, adj_closing]):
-    closing = True 
-    # Setting closing to be true in the case that a 
-    # user doesn't specify any.
   adj_daily_ticker_data, *_ = ts.get_daily_adjusted(ticker_index.upper())
-
   df = pd.DataFrame(adj_daily_ticker_data).T
   df.index = pd.to_datetime(df.index, format = "%Y-%m-%d")
-
+  df = df.iloc[:days]
   #output_file("lines.html")
   p = figure(title=f"Stock Prices for {ticker_index.upper()}", x_axis_label='Date', y_axis_label='Stock Price (USD)', x_axis_type="datetime")
   
@@ -65,7 +68,7 @@ def plot_ticker(ticker_index, opening, closing, adj_closing):
   if closing:
     p.line(df.index, df['4. close'], legend_label="Closing Price", line_width=2, color='blue')
   if adj_closing:
-    p.line(df.index, df['5. asjusted close'], legend_label="Adjusted Closing Price", line_width=2, color='green')
+    p.line(df.index, df['5. adjusted close'], legend_label="Adjusted Closing Price", line_width=2, color='green')
   #show(p)
   return components(p)
 

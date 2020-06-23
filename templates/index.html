@@ -22,14 +22,16 @@
           <form action="/ticker" method="POST">
             <label>Stock Ticker:</label>
             <input type="text" id="ticker" name="ticker", placeholder="GOOG"><br>
-            <input type="checkbox" id='opening' name = 'opening'>
-            <label for="opening"> Opening price</label><br>
-          
-            <input type="checkbox" id='closing' name = 'closing'>
+            <input type="checkbox" id='closing' name = 'closing' checked>
             <label for="closing"> Closing price</label><br>
           
             <input type="checkbox" id='adj-closing' name = 'adj-closing'>
             <label for="adj-closing"> Adjusted closing price</label><br>
+
+            <input type="checkbox" id='opening' name = 'opening'>
+            <label for="opening"> Opening price</label><br>
+            <label for='days'>Number of days of stock history (1 day min, 100 day max): </label>
+            <input type='number' id='days' name='days' placeholder=30 min=1 max=100><br>
             <input type="submit">
           </form>
         </div>
