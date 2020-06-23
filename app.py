@@ -7,8 +7,10 @@ import pandas as pd
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
+  if (request.method == 'POST') and (request.form.get('ticker', '') != ''):
+    return ticker()
   return render_template('index.html')
 
 @app.route('/ticker', methods=['GET', 'POST'])
@@ -36,5 +38,35 @@ def ticker():
     div = div
     )
 
-if __name__ == '__main__':
-  app.run(port=33507)
+def plot_ticker(ticker_index, opening, closing, adj_closing):
+  """
+  A function to create a plot of the 
+  """
+  ts = TimeSeries(key='2HJW48VQJPVUPP5L')
+  opening_data = []
+  closing_data = []
+  adj_closing_data = []
+  dates = []
+  if not any([opening, closing, adj_closing]):
+    closing = True 
+    # Setting closing to be true in the case that a 
+    # user doesn't specify any.
+  adj_daily_ticker_data, *_ = ts.get_daily_adjusted(ticker_index.upper())
+
+  df = pd.DataFrame(adj_daily_ticker_data).T
+  df.index = pd.to_datetime(df.index, format = "%Y-%m-%d")
+
+  #output_file("lines.html")
+  p = figure(title=f"Stock Prices for {ticker_index.upper()}", x_axis_label='Date', y_axis_label='Stock Price (USD)', x_axis_type="datetime")
+  
+  # add a line renderer with legend and line thickness
+  if opening:
+    p.line(df.index, df['1. open'], legend_label="Opening Price", line_width=2, color='red')
+  if closing:
+    p.line(df.index, df['4. close'], legend_label="Closing Price", line_width=2, color='blue')
+  if adj_closing:
+    p.line(df.index, df['5. asjusted close'], legend_label="Adjusted Closing Price", line_width=2, color='green')
+  #show(p)
+  return components(p)
+
+if __name__ == '__main__':app.run(port=33507)
