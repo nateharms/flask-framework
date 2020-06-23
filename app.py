@@ -1,4 +1,9 @@
 from flask import Flask, render_template, request, redirect
+from alpha_vantage.timeseries import TimeSeries
+import matplotlib
+from bokeh.plotting import figure, output_file, show
+from bokeh.embed import components
+import pandas as pd
 
 app = Flask(__name__)
 
