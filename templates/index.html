@@ -7,7 +7,7 @@
     <meta name="author" content="@gotoariel">
     <!-- <link rel="icon" href="favicon.ico"> -->
 
-    <title>Wilkommen, bienvenue, and welcome to Heroku!</title>
+    <title>Nate's First App!</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -16,14 +16,22 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-12 text-left">
-          <h2>Hello, World!</h2>
-          <ul>
-            <li><a href="/about">About</a></li>
-            <li><a target="_blank" href="https://www.heroku.com/">Heroku</a></li>
-            <li><a target="_blank" href="http://flask.pocoo.org/">Flask</a></li>
-            <li><a target="_blank" href="http://jinja.pocoo.org/docs/2.9/">Jinja2</a></li>
-            <li><a target="_blank" href="http://getbootstrap.com/">Bootstrap</a></li>
-          </ul>
+          <h2>Home</h2>
+          <p><a href="/">Home</a></p>
+          <h7>Enter a stock ticker that you want to see trends about. If the stock ticker is invalid, you will return to this page.</h7>
+          <form action="/ticker" method="POST">
+            <label>Stock Ticker:</label>
+            <input type="text" id="ticker" name="ticker", placeholder="GOOG"><br>
+            <input type="checkbox" id='opening' name = 'opening'>
+            <label for="opening"> Opening price</label><br>
+          
+            <input type="checkbox" id='closing' name = 'closing'>
+            <label for="closing"> Closing price</label><br>
+          
+            <input type="checkbox" id='adj-closing' name = 'adj-closing'>
+            <label for="adj-closing"> Adjusted closing price</label><br>
+            <input type="submit">
+          </form>
         </div>
       </div>
     </div>
@@ -34,3 +42,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </body>
 </html>
+
+
+
+
+
